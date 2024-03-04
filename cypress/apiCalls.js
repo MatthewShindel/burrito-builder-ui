@@ -15,7 +15,6 @@ export const postOrder = (order) => {
 		if (!response.ok){
 			throw new Error(response.status);
 		}
-		console.log("posted successfully");
 		return response.json();
 	})
 }
