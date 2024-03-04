@@ -1,11 +1,21 @@
 import { useState } from "react";
 
-function OrderForm(props) {
+function OrderForm({ makeOrder}) {
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState([]);
 
   function handleSubmit(e) {
     e.preventDefault();
+		if(name.trim() === "" || ingredients.length === 0) {
+			console.log('tough luck, need both');
+			return;
+		}
+		const order = {
+			id: Date.now(),
+			name,
+			ingredients
+		}
+		makeOrder(order);
     clearInputs();
   }
 
@@ -28,6 +38,11 @@ function OrderForm(props) {
     "cilantro",
     "sour cream",
   ];
+
+	const ingredientsClick = (ingredient) => {
+		setIngredients((ingredients) => [...ingredients, ingredient])
+	}
+
   const ingredientButtons = possibleIngredients.map((ingredient) => {
     return (
       <button
@@ -35,8 +50,8 @@ function OrderForm(props) {
         name={ingredient}
         onClick={(e) => {
 					e.preventDefault();
-					
-				} }
+					ingredientsClick(ingredient)
+				}}
       >
         {ingredient}
       </button>
@@ -50,7 +65,7 @@ function OrderForm(props) {
         placeholder="Name"
         name="name"
         value={name}
-        onChange={(e) => handleSubmit(e) }
+        onChange={(e) => setName(e.target.value) }
       />
 
       {ingredientButtons}

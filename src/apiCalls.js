@@ -11,4 +11,11 @@ export const postOrder = (order) => {
     },
     body: JSON.stringify(order),
   })
+	.then((response) => {
+		if (!response.ok){
+			throw new Error(response.status);
+		}
+		console.log("posted successfully");
+		return response.json();
+	})
 }
