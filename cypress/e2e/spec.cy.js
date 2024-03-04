@@ -61,9 +61,13 @@ describe("testing burrito page interaction", () => {
 			.get('ul.ingredient-list').should('contain', 'pico de gallo')
 		})
 	})
+
 	it("Should not be able to submit an order if you didn't fill out both form fields" , () => {
 		cy.get('input[name="name"]').type("Matthew's Test Burrito")
 		.get('.submitOrderButton').click()
+		cy.on('window:alert', (alertText) => {
+			expect(alertText).to.equal('Tough luck, need both a name and at least one ingredient.');
+		})
 		.get('.orderSection').find('.order').last().within(() => {
 			cy.get('h3').should('have.text' , 'Alex')
 			.get('ul.ingredient-list').should('contain', 'sofritas')
@@ -77,6 +81,9 @@ describe("testing burrito page interaction", () => {
 		.get('button[name="carnitas"]').click()
 		.get('button[name="pico de gallo"]').click()
 		.get('.submitOrderButton').click()
+		cy.on('window:alert', (alertText) => {
+			expect(alertText).to.equal('Tough luck, need both a name and at least one ingredient.');
+		})
 		.get('.orderSection').find('.order').last().within(() => {
 			cy.get('h3').should('have.text' , 'Alex')
 			.get('ul.ingredient-list').should('contain', 'sofritas')
@@ -86,4 +93,5 @@ describe("testing burrito page interaction", () => {
 			.get('ul.ingredient-list').should('contain', 'queso fresco')
 		})
 	})
+
 });

@@ -5,9 +5,9 @@ function OrderForm({ makeOrder}) {
   const [ingredients, setIngredients] = useState([]);
 
   function handleSubmit(e) {
-    e.preventDefault();
-		if(name.trim() === "" || ingredients.length === 0) {
-			console.log('tough luck, need both');
+		e.preventDefault();
+		if (name.trim() === "" || ingredients.length === 0) {
+			alert('Tough luck, need both a name and at least one ingredient.');
 			return;
 		}
 		const order = {
@@ -16,8 +16,8 @@ function OrderForm({ makeOrder}) {
 			ingredients
 		}
 		makeOrder(order);
-    clearInputs();
-  }
+		clearInputs();
+	}
 
   function clearInputs() {
     setName("");
