@@ -62,7 +62,28 @@ describe("testing burrito page interaction", () => {
 		})
 	})
 	it("Should not be able to submit an order if you didn't fill out both form fields" , () => {
-
+		cy.get('input[name="name"]').type("Matthew's Test Burrito")
+		.get('.submitOrderButton').click()
+		.get('.orderSection').find('.order').last().within(() => {
+			cy.get('h3').should('have.text' , 'Alex')
+			.get('ul.ingredient-list').should('contain', 'sofritas')
+			.get('ul.ingredient-list').should('contain', 'beans')
+			.get('ul.ingredient-list').should('contain', 'sour cream')
+			.get('ul.ingredient-list').should('contain', 'carnitas')
+			.get('ul.ingredient-list').should('contain', 'queso fresco')
+		})
+		cy.get('input[name="name"]').clear()
+		.get('button[name="beans"]').click()
+		.get('button[name="carnitas"]').click()
+		.get('button[name="pico de gallo"]').click()
+		.get('.submitOrderButton').click()
+		.get('.orderSection').find('.order').last().within(() => {
+			cy.get('h3').should('have.text' , 'Alex')
+			.get('ul.ingredient-list').should('contain', 'sofritas')
+			.get('ul.ingredient-list').should('contain', 'beans')
+			.get('ul.ingredient-list').should('contain', 'sour cream')
+			.get('ul.ingredient-list').should('contain', 'carnitas')
+			.get('ul.ingredient-list').should('contain', 'queso fresco')
+		})
 	})
-
 });
