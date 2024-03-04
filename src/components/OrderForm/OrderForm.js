@@ -72,7 +72,7 @@ function OrderForm({ makeOrder}) {
 
       <p>Order: {ingredients.join(", ") || "Nothing selected"}</p>
 
-      <button onClick={(e) => handleSubmit(e)}>Submit Order</button>
+      <button className="submitOrderButton" onClick={(e) => handleSubmit(e)}>Submit Order</button>
     </form>
   );
 }
