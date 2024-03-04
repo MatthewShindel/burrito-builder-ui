@@ -1,5 +1,6 @@
 describe("testing burrito page interaction", () => {
 	beforeEach(() => {
+		cy.visit("http://localhost:3000/")
 		cy.intercept("GET", "http://localhost:3001/api/v1/orders", {
       statusCode: 200,
       fixture: "example.json",
@@ -11,14 +12,13 @@ describe("testing burrito page interaction", () => {
 			body: {
 				id: 4,
 				name: "Matthew's Test Burrito",
-				ingredients: ["beans","carnitas", "pico de gallo","hot sauce"]
+				ingredients: ["beans","carnitas", "pico de gallo"]
 			}
     })
 	})
 
   it("should have basic information on the webpage, assuming you just turned on the API ", () => {
-    cy.visit("http://localhost:3000/")
-		.get('h1').should("have.text", "Burrito Builder")
+		cy.get('h1').should("have.text", "Burrito Builder")
 		.get('p').should('contain', 'Order: Nothing selected')
 		cy.get('form button[name]').each(($button) => {
       const expectedName = $button.attr('name');
@@ -49,7 +49,20 @@ describe("testing burrito page interaction", () => {
   });
 
 	it("Should be able to submit an order" , () => {
+		cy.get('input[name="name"]').type("Matthew's Test Burrito")
+		.get('button[name="beans"]').click()
+		.get('button[name="carnitas"]').click()
+		.get('button[name="pico de gallo"]').click()
+		.get('.submitOrderButton').click()
+		.get('.orderSection').find('.order').last().within(() => {
+			cy.get('h3').should('have.text', "Matthew's Test Burrito")
+			.get('ul.ingredient-list').should('contain', 'beans')
+			.get('ul.ingredient-list').should('contain', 'carnitas')
+			.get('ul.ingredient-list').should('contain', 'pico de gallo')
+		})
+	})
+	it("Should not be able to submit an order if you didn't fill out both form fields" , () => {
 
 	})
-	
+
 });
